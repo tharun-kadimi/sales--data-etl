@@ -1,0 +1,14 @@
+# Ignore Python Bytecode
+__pycache__/
+*.pyc
+
+# Ignore virtual environments
+venv/
+
+# # Ignore raw data files
+# data/*.csv
+# data/*.json
+# data/*.xlsx
+
+# # Ignore output reports
+# reports/
