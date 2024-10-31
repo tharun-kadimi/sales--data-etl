@@ -2,7 +2,7 @@ import boto3
 from openpyxl import load_workbook
 import boto3,os
 import pandas as pd 
-
+from io import BytesIO
 
 s3_client= boto3.client('s3')
 s3= boto3.resource('s3')
@@ -15,8 +15,8 @@ print(SalesDf)
 
 objectdf2= s3_client.get_object(Bucket=bucket_name,Key='customer_data.json') 
 CustomerDf=pd.read_json(objectdf2['Body'])
-print(SalesDf) 
+print(CustomerDf) 
 
 objectdf3= s3_client.get_object(Bucket=bucket_name,Key='product_data.xlsx') 
-ProductDf=pd.read_excel(objectdf3['Body'])
+ProductDf=pd.read_excel(BytesIO(objectdf3['Body'].read()))
 print(ProductDf) 
