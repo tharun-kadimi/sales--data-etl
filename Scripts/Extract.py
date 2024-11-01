@@ -29,12 +29,12 @@ else:
     print(f"The file {sales_data} was uploaded on {last_modified_f1.date()}, not today.")
 
 
+#customer_data_section
 objectdf2= s3_client.get_object(Bucket=bucket_name,Key=customer_data) 
 CustomerDf=pd.read_json(objectdf2['Body'])
 print(CustomerDf) 
 response2 = s3_client.head_object(Bucket=bucket_name, Key=customer_data)
 last_modified_f2 = response2['LastModified']
-
 
 today = datetime.now(timezone.utc)
 
@@ -43,6 +43,8 @@ if last_modified_f2.date() == today.date():
 else:
     print(f"The file {customer_data} was uploaded on {last_modified_f2.date()}, not today.")
 
+
+#product_data_section
 objectdf3= s3_client.get_object(Bucket=bucket_name,Key=product_data) 
 ProductDf=pd.read_excel(BytesIO(objectdf3['Body'].read()))
 print(ProductDf) 
