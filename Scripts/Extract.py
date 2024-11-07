@@ -12,7 +12,8 @@ bucket_name = 'sales--data-etl'
 sales_data='sales_data.csv'
 customer_data='customer_data.json'
 product_data='product_data.xlsx'
-def salesData():
+
+def salesData(sales_data):
     objectdf1= s3_client.get_object(Bucket=bucket_name,Key=sales_data) 
     SalesDf=pd.read_csv(objectdf1['Body'])
     print(SalesDf) 
@@ -28,22 +29,23 @@ def salesData():
         return SalesDf
     else:
         print(f"The file {sales_data} was uploaded on {last_modified_f1.date()}, not today.")
-        print("none")
-
+        
 
 #customer_data_section
-objectdf2= s3_client.get_object(Bucket=bucket_name,Key=customer_data) 
-CustomerDf=pd.read_json(objectdf2['Body'])
-print(CustomerDf) 
-response2 = s3_client.head_object(Bucket=bucket_name, Key=customer_data)
-last_modified_f2 = response2['LastModified']
+def customerData(customer_data):
+    objectdf2= s3_client.get_object(Bucket=bucket_name,Key=customer_data) 
+    CustomerDf=pd.read_json(objectdf2['Body'])
+    print(CustomerDf) 
+    response2 = s3_client.head_object(Bucket=bucket_name, Key=customer_data)
+    last_modified_f2 = response2['LastModified']
 
-today = datetime.now(timezone.utc)
+    today = datetime.now(timezone.utc)
 
-if last_modified_f2.date() == today.date():
-    print(f"The file {customer_data} was uploaded today ({last_modified_f2.date()}).")
-else:
-    print(f"The file {customer_data} was uploaded on {last_modified_f2.date()}, not today.")
+    if last_modified_f2.date() == today.date():
+        print(f"The file {customer_data} was uploaded today ({last_modified_f2.date()}).")
+        return CustomerDf
+    else:
+        print(f"The file {customer_data} was uploaded on {last_modified_f2.date()}, not today.")
 
 
 #product_data_section
