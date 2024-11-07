@@ -49,15 +49,17 @@ def customerData(customer_data):
 
 
 #product_data_section
-objectdf3= s3_client.get_object(Bucket=bucket_name,Key=product_data) 
-ProductDf=pd.read_excel(BytesIO(objectdf3['Body'].read()))
-print(ProductDf) 
-response3 = s3_client.head_object(Bucket=bucket_name, Key=product_data)
-last_modified_f3 = response3['LastModified']
+def productsData(product_data):
+    objectdf3= s3_client.get_object(Bucket=bucket_name,Key=product_data) 
+    ProductDf=pd.read_excel(BytesIO(objectdf3['Body'].read()))
+    print(ProductDf) 
+    response3 = s3_client.head_object(Bucket=bucket_name, Key=product_data)
+    last_modified_f3 = response3['LastModified']
 
-today = datetime.now(timezone.utc)
+    today = datetime.now(timezone.utc)
 
-if last_modified_f3.date() == today.date():
-    print(f"The file {product_data} was uploaded today ({last_modified_f3.date()}).")
-else:
-    print(f"The file {product_data} was uploaded on {last_modified_f3.date()}, not today.")
+    if last_modified_f3.date() == today.date():
+        print(f"The file {product_data} was uploaded today ({last_modified_f3.date()}).")
+        return ProductDf
+    else:
+        print(f"The file {product_data} was uploaded on {last_modified_f3.date()}, not today.")
